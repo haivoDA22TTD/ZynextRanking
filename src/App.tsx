@@ -6,7 +6,7 @@ import GameCard from './components/GameCard';
 import GameModal from './components/GameModal';
 import Footer from './components/Footer';
 import Loading from './components/Loading';
-import { gameApi } from './services/api';
+import { gameApi } from './services/api'; // Kiểm tra xem gameApi đã được xuất đúng cách
 import { addRankingToGames } from './utils/ranking';
 import type { Game, GameWithRanking } from './types/game';
 
@@ -37,8 +37,7 @@ function App() {
     try {
       setLoading(true);
       setError(null);
-      const data: Game[] = await gameApi.getAllGames();
-      // Thêm ranking score và player stats
+      const data: Game[] = await gameApi.getAllGames(); // Gọi hàm từ gameApi
       const rankedGames = addRankingToGames(data);
       setGames(rankedGames);
     } catch (err) {
@@ -55,17 +54,14 @@ function App() {
         selectedPlatform === 'all' ||
         game.platform.toLowerCase() === selectedPlatform.toLowerCase() ||
         game.platform.toLowerCase().includes(selectedPlatform.toLowerCase());
-
       const matchesGenre =
         selectedGenre === 'all' ||
         game.genre.toLowerCase() === selectedGenre.toLowerCase() ||
         game.genre.toLowerCase().includes(selectedGenre.toLowerCase());
-
       const matchesSearch =
         searchQuery === '' ||
         game.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         game.short_description.toLowerCase().includes(searchQuery.toLowerCase());
-
       return matchesPlatform && matchesGenre && matchesSearch;
     });
   }, [games, selectedPlatform, selectedGenre, searchQuery]);
@@ -103,10 +99,8 @@ function App() {
   return (
     <div className="min-h-screen">
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-
       <main className="container mx-auto px-4 pb-8">
         <Banner games={games} />
-
         <div className="mt-8">
           <FilterBar
             selectedPlatform={selectedPlatform}
@@ -116,7 +110,6 @@ function App() {
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
           />
-
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               🏆 Bảng xếp hạng{' '}
@@ -128,7 +121,6 @@ function App() {
               💡 Click vào game để xem biểu đồ thống kê
             </div>
           </div>
-
           {filteredGames.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-600 dark:text-gray-400 text-xl">
@@ -149,9 +141,7 @@ function App() {
           )}
         </div>
       </main>
-
       <Footer />
-
       {selectedGame && (
         <GameModal
           game={selectedGame}
