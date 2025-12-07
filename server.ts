@@ -12,32 +12,37 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Proxy API requests to freetogame.com
+// Proxy API requests to freetogame.com - MUST be before static files
 app.get('/api/games', async (req, res) => {
   try {
     const { platform, category } = req.query;
     let apiUrl = 'https://www.freetogame.com/api/games';
     
-    if (platform) {
-      apiUrl += `?platform=${platform}`;
-    } else if (category) {
-      apiUrl += `?category=${category}`;
-    }
+    const params = [];
+    if (platform) params.push(`platform=${platform}`);
+    if (category) params.push(`category=${category}`);
+    if (params.length > 0) apiUrl += `?${params.join('&')}`;
 
+    console.log('Fetching from:', apiUrl);
     const response = await fetch(apiUrl);
+    
+    if (!response.ok) {
+      throw new Error(`API responded with status: ${response.status}`);
+    }
+    
     const data = await response.json();
     res.json(data);
   } catch (error) {
     console.error('Error fetching games:', error);
-    res.status(500).json({ error: 'Failed to fetch games' });
+    res.status(500).json({ error: 'Failed to fetch games', details: error.message });
   }
 });
 
 // Serve static files from dist folder
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Handle client-side routing
-app.get('*', (req, res) => {
+// Handle client-side routing - MUST be last
+app.get('/*', (_req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
