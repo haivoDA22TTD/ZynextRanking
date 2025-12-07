@@ -21,7 +21,7 @@ export interface Game {
 export const getAllGames = async (): Promise<Game[]> => {
   try {
     const res = await fetch(GAMES_API_URL);
-    if (!res.ok) throw new Error(`Failed to fetch games: ${res.statusText}`);
+    if (!res.ok) throw new Error(`Failed to fetch games: ${res.status} - ${res.statusText}`);
     const data: Game[] = await res.json();
     return data;
   } catch (error) {
@@ -38,7 +38,7 @@ export const getGamesByCategory = async (category: string): Promise<Game[]> => {
   
   try {
     const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to fetch games by category: ${res.statusText}`);
+    if (!res.ok) throw new Error(`Failed to fetch games by category: ${res.status} - ${res.statusText}`);
     const data: Game[] = await res.json();
     return data;
   } catch (error) {
@@ -55,7 +55,7 @@ export const getGamesByPlatform = async (platform: string): Promise<Game[]> => {
   
   try {
     const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to fetch games by platform: ${res.statusText}`);
+    if (!res.ok) throw new Error(`Failed to fetch games by platform: ${res.status} - ${res.statusText}`);
     const data: Game[] = await res.json();
     return data;
   } catch (error) {
