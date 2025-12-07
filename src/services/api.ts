@@ -1,6 +1,6 @@
 import type { Game } from '../types/game';
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'https://www.freetogame.com/api';
 
 export const gameApi = {
   getAllGames: async (): Promise<Game[]> => {
