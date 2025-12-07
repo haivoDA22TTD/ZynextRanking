@@ -1,12 +1,9 @@
-# render.yaml
 services:
   - type: web
     name: zynexranking
     env: node
-    buildCommand: npm install && npm run build
-    startCommand: node server.ts
+    region: oregon
     plan: free
-
-    # Để Render biết dùng TypeScript
-    envVars:
-      NODE_VERSION: ~20
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    autoDeploy: true
